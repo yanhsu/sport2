@@ -1,0 +1,253 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="zh-tw">
+<head>
+<meta name="Generator" content="EditPlus" />
+<meta name="Keywords" content="" />
+<meta name="Description" content="" />
+<META HTTP-EQUIV="expires" CONTENT="0">
+<META HTTP-EQUIV="pragma" CONTENT="no-cache">
+<META HTTP-EQUIV="Cache-Control" CONTENT="no-cache">
+<META HTTP-EQUIV="EXPIRES" CONTENT="Mon, 22 Jul 2002 11:12:01 GMT"> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+<title>彰師資工系運</title>
+<style type="text/css">
+
+.button-style {
+	display: inline-block;
+	margin-top: 20px;
+	padding: 7px 20px;
+	background: #333;
+	border-radius: 5px;
+	text-decoration: none;
+	text-transform: uppercase;	
+	color: #FFFFFF;
+}
+.a1 {
+	font-size: 16px;
+		font-family: "微軟正黑體";
+}
+
+	#abgneBlock {
+	width: 480px;
+	height: 360px;
+	position: relative;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	}
+	#abgneBlock ul.list {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		position: absolute;
+		width: 9999px;
+		height: 100%;
+	}
+	#abgneBlock ul.list li {
+		float: left;
+		width: 480px;
+		height: 100%;
+	}
+	#abgneBlock .list img{
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+	#abgneBlock ul.playerControl {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+		height: 14px;
+	}
+	#abgneBlock ul.playerControl li {
+		float: left;
+		width: 23px;
+		height: 14px;
+		cursor: pointer;
+		margin: 0px 2px;
+		background: url(images/rect_ctrl.png) no-repeat 0 0;
+	}
+	#abgneBlock ul.playerControl li.current { 
+		background-position: -23px 0;
+	}
+.red {
+	color: #F00;
+	font-size: 24px;
+	font-family: "微軟正黑體";
+}
+body p {
+	font-family: "微軟正黑體";
+}
+.w {
+	color: #FFF;
+}
+.ww {
+	font-family: "微軟正黑體";
+}
+</style>
+<script type="text/javascript">
+	$(function(){
+		// 先取得必要的元素並用 jQuery 包裝
+		// 再來取得 $block 的高度及設定動畫時間
+		var $block = $('#abgneBlock'),
+			$slides = $('ul.list', $block),
+			_width = $block.width(),
+			$li = $('li', $slides),
+			_animateSpeed = 600, 
+			// 加入計時器, 輪播時間及控制開關
+			timer, _showSpeed = 3000, _stop = false;
+
+		// 產生 li 選項
+		var _str = '';
+		for(var i=0, j=$li.length;i<j;i++){
+			// 每一個 li 都有自己的 className = playerControl_號碼
+			_str += '<li class="playerControl_' + (i+1) + '"></li>';
+		}
+
+		// 產生 ul 並把 li 選項加到其中
+		var $playerControl = $('<ul class="playerControl"></ul>').html(_str).appendTo($slides.parent()).css('left', function(){
+			// 把 .playerControl 移到置中的位置
+			return (_width - $(this).width()) / 2;
+		});
+		
+		// 幫 li 加上 click 事件
+		var $playerControlLi = $playerControl.find('li').mouseover(function(){
+			var $this = $(this);
+			$this.addClass('current').siblings('.current').removeClass('current');
+
+			clearTimeout(timer);
+			// 移動位置到相對應的號碼
+			$slides.stop().animate({
+				left: _width * $this.index() * -1
+			}, _animateSpeed, function(){
+				// 當廣告移動到正確位置後, 依判斷來啟動計時器
+				if(!_stop) timer = setTimeout(move, _showSpeed);
+			});
+
+			return false;
+		}).eq(0).mouseover().end();
+
+		// 如果滑鼠移入 $block 時
+		$block.hover(function(){
+			// 關閉開關及計時器
+			_stop = true;
+			clearTimeout(timer);
+		}, function(){
+			// 如果滑鼠移出 $block 時
+			// 開啟開關及計時器
+			_stop = false;
+			timer = setTimeout(move, _showSpeed);
+		});
+		
+		// 計時器使用
+		function move(){
+			var _index = $('.current').index();
+			$playerControlLi.eq((_index + 1) % $playerControlLi.length).mouseover();
+		}
+	});
+</script>
+</head>
+
+<body>
+<span class="red">賽程</span><br>
+<table border="1" cellspacing="0" cellpadding="0" width="608">
+  <tr>
+    <td width="99" valign="top"><p align="center">日期</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">3/8(三)</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">3/9(四)</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">3/11(六)</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">3/12(日)</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">3/16(四)</p></td>
+  </tr>
+  <tr>
+    <td width="99" valign="top"><p align="center">時間(暫定)</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">17:00~21:00</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">17:00~21:00</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">13:00~18:00</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">9:00~12:00</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">18:30~21:00</p></td>
+  </tr>
+  <tr>
+    <td width="99" valign="top"><p align="center">項目</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">桌球</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">羽球</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">籃球3v3<br>三分球大賽</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">趣味競賽<br>躲避球</p></td>
+	<td width="99" valign="top" bgcolor="#CCFF99"><p align="center">保齡球</p></td>
+  </tr>
+  <tr>
+    <td width="99" valign="top"><p align="center">地點</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">桌球教室</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">羽球館</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">天空籃球場</p></td>
+    <td width="99" valign="top" bgcolor="#CCFF99"><p align="center">天空籃球場</p></td>
+	<td width="99" valign="top" bgcolor="#CCFF99"><p align="center">中央保齡球館</p></td>
+  </tr>
+</table>
+<br><span class="red">賽程</span>
+<table border="1" cellspacing="0" cellpadding="0" width="610">
+  <tr>
+    <td width="99" valign="top"><p align="center">日期</p></td>
+    <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">3/18(六)</p></td>
+    <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">3/12(日)</p></td>
+  </tr>
+  <tr>
+    <td width="99" valign="top"><p align="center">時間</p></td>
+	<td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">14:00~17:00</p></td>
+    <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">14:00~21:00</p></td>
+  <!--   <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">14:00~18:00</p></td> -->
+  </tr>
+  <tr>
+    <td width="99" valign="top"><p align="center">項目</p></td>
+    <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">排球</p></td>
+    <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">籃球5v5</p></td>
+    <!-- <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">足壘球<br></p></td> -->
+    </div></td>
+  </tr>
+  <tr>
+    <td width="99" valign="top"><p align="center">地點</p></td>
+	<td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">天空排球場</p></td>
+    <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">天空籃球場<br></p></td>
+ <!--    <td width="99" valign="top" bgcolor="#CCFFCC"><p align="center">寶山壘球場</p></td> -->
+  </tr>
+</table>
+<!--
+<p>&nbsp;</p>
+<p style="color:red">
+各競賽項目抽籤時間點 :<br><br>
+開幕式 : 桌球、羽球、撞球<br>
+現場 : 保齡球<br><br>
+其餘不在上述之球類比賽皆為主辦方代抽！<br>
+</p>
+<p><span class="red">精神總錦標 </span><br>
+  系運期間的每個比賽天，只要到場看比賽都可以領乙張摸彩卷，領取時工作人員會做登記，統計至閉幕式當天20:00，依照系級領取人數做加總，加總出最高值系級為精神總錦標之得獎者。 </p>
+<p><span class="red">競賽總錦標 </span><br>
+    籃球5vs5、排球、躲避球、足壘球、趣味競賽(為了讓大家踴躍參與)<br>
+    以上項目為：第一名　該系級得5分<br>
+    以上項目為：第二名　該系級得3分<br>
+    以上項目為：第三名　該系級得1分<br>
+</p>
+<p>籃球3vs3、桌球(雙打)、羽球(雙打)、撞球、保齡球、三分球大賽(罰球線大賽)、桌球(單打)、羽球(單打)<br>
+    以上項目為：第一名　該隊每位選手系級得3分<br>
+    以上項目為：第二名　該隊每位選手系級得2分<br>
+    以上項目為：第三名　該隊每位選手系級得1分<br>
+</p>
+<p>舉例說明如下：<br>
+  保齡球第一名　隊伍名單： 甲（104級）、乙（105級）、丙（106級）、丁（107級）、戊（碩班）
+  <br>
+  則此時每系級(104.105.106.107.碩)皆得3分 </p>
+<p>各項目名次得分加總後最高值之系級為競賽總錦標之得獎者。 </p> -->
+<p>&nbsp;</p>
+<p><span class="red">關於系運 </span>
+  <br>
+  <span class="ww">對於比賽項目內容有任何疑問請洽資工體育股長 <a href="https://www.facebook.com/profile.php?id=100000393056233" target="_new">吳子宇</a></span>
+<br>
+對於比賽報名系統有任何疑問請洽資工系學會<a href="https://www.facebook.com/ncuecsieCouncil/?ref=hl" target="_new">國立彰化師範大學資訊工程系學會</a></p>
+<p>&nbsp;</p>
+</body>
+</html>
